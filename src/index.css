@@ -22,10 +22,14 @@
 }
 
 .c-LandingPage__Scene {
+  top: 0;
+  left: 0;
   width: 100%;
+  z-index: 1;
   height: 100%;
   position: absolute;
-  border: 1px solid rgba(255, 255, 25)
+  border: 1px solid rgba(255, 255, 25);
+  z-index: -1
 }
 
 .c-LandingPage__Listitem {

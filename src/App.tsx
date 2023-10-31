@@ -2,6 +2,7 @@ import "./App.css";
 import { Suspense, useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import Scene from "../src/components/Scene3d/Scene";
+import Dinosaur from "../src/components/Scene3d/Dinosaur";
 import ListItem from "../src/components/ListItem";
 import { Canvas } from "@react-three/fiber";
 import { User } from "../src/models/User";
@@ -16,7 +17,24 @@ function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
+  const [filter, setFilter] = useState("");
 
+  useEffect(() => {
+    setTimeout(() => {
+      const nextUsers = createFakeUser(10);
+      setUsers(nextUsers);
+      setLoading(false);
+    }, 750);
+  }, []);
+
+  const createUser = () => {
+    const nextUsers = createFakeUser(1);
+    setUsers([...users, ...nextUsers]);
+    // setUsers((prev) => [...prev, ...nextUsers]);
+  };
+  const deleteUser = (id: number) => {
+    console.log(id);
+  };
   return (
     <>
       <div className="c-LandingPage">
@@ -27,19 +45,47 @@ function App() {
           <Button isDisabled={false}>
             <span>Lumière</span>
           </Button>
+
+          <Button isDisabled={false} onClick={createUser}>
+            <span>Create user</span>
+          </Button>
+          <input
+            type="text"
+            onChange={(event) => setFilter(event.target.value)}
+          />
         </div>
         <div className="c-LandingPage__Listitem">
-          <Button onClick={() => setCount(count + 1)} />
-          Counteur : {count}
-          <Button />
-          <ListContainer>
-            {createFakeUser(50).map(({ id, name, avatar }) => (
-              <ListItem key={id} name={name} avatar={avatar} />
-            ))}
-          </ListContainer>
+          <Button onClick={() => setCount(count + 1)}>
+            Counteur : {count}
+          </Button>
+          {loading ? (
+            <h2>Loading...</h2>
+          ) : (
+            <ListContainer>
+              {users
+                .filter((user) => user.name.match(new RegExp(filter, "ig")))
+                .map(({ id, name, avatar }) => (
+                  <ListItem
+                    key={id}
+                    name={name}
+                    avatar={avatar}
+                    onClick={() => deleteUser(id)}
+                  />
+                ))}
+            </ListContainer>
+          )}
         </div>
         <div className="c-LandingPage__Scene">
           <Canvas>
+            <Environment
+              background={"only"}
+              files={"../public/models/textures/envmap_blur.hdr"}
+              ground={{ height: 100, radius: 300 }}
+            />
+            <Environment
+              background={false}
+              files={"../public/models/textures/envmap.hdr"}
+            />
             <PerspectiveCamera
               makeDefault
               fov={33}
@@ -51,6 +97,7 @@ function App() {
             />
             <Suspense fallback={null}>
               <Scene />
+              <Dinosaur />
             </Suspense>
           </Canvas>
         </div>

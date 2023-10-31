@@ -2,12 +2,14 @@ import styled from "@emotion/styled";
 import Avatar from "../components/Avatar";
 
 type Props = {
-  avatar: string;
   name: string;
+  avatar: string;
+  onClick: () => void;
 };
-const ListItem = ({ name, avatar }: Props) => {
+
+const ListItem = ({ name, avatar, onClick }: Props) => {
   return (
-    <ItemContainer>
+    <ItemContainer onClick={onClick}>
       <Avatar avatar={avatar} />
       {name}
     </ItemContainer>
@@ -18,6 +20,15 @@ const ItemContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  margin: 0.2rem 0;
+  transition: background-color 0.25s ease-in-out;
+
+  &:hover {
+    background-color: #181818;
+  }
 `;
 
 export default ListItem;
