@@ -6,8 +6,8 @@ export default function Dinosaur(props) {
 
   // Définir les propriétés du matériau
   const materialProps = {
-    color: 0xffffff, // Blanc
-    opacity: 0.3, // Opacité à 0.3 (30%)
+    color: 0xe9d8c3, // Blanc
+    opacity: 0.7, // Opacité à 0.3 (30%)
     transparent: true,
   };
 
