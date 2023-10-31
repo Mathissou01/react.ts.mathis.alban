@@ -1,0 +1,8 @@
+.c-Avatarcontainer {
+    background-color: aqua;
+}
+
+.c-Avatarcontainer__img {
+    width: 20px;
+    height: 20px;
+}
