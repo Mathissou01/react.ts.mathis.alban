@@ -1,33 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import InputComponent from "../components/Input";
 import { createFakePost } from "../services/createFakePost";
 import ListItemPosts from "../components/ListPost";
 import styled from "@emotion/styled";
-import { Post } from "../models/Post";
+import { usePosts } from "../services/users/usePosts";
 
 function PostsPage() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { posts, loading, setPosts, deletePosts } = usePosts();
   const [searchFilter, setSearchFilter] = useState("");
-
-  useEffect(() => {
-    setTimeout(() => {
-      const newPosts = createFakePost(10);
-      setPosts(newPosts);
-      setLoading(false);
-    }, 750);
-  }, []);
 
   const createPost = () => {
     const newPosts = createFakePost(1);
     setPosts([...posts, ...newPosts]);
   };
-
-  const deletePost = (id: number) => {
-    const newPosts = posts.filter((post) => post.id !== id);
-    setPosts(newPosts);
-  };
-
+  console.log("post", posts);
   return (
     <div className="c-PostsPage">
       <Button isDisabled={false} onClick={createPost}>
@@ -52,7 +38,7 @@ function PostsPage() {
                 image={image}
                 date={date}
                 likes={likes}
-                onClick={() => deletePost(id)}
+                onClick={() => deletePosts(id)}
               />
             ))}
         </ListContainer>

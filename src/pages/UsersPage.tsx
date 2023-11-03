@@ -1,32 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import InputComponent from "../components/Input";
 import { createFakeUser } from "../services/createFakeUser";
 import ListItem from "../components/ListItem";
 import styled from "@emotion/styled";
-import { User } from "../models/User";
+import { useUsers } from "../services/users/useUsers";
 
 function UsersPage() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [count, setCount] = useState(0);
+  useUsers();
+  const { users, loading, setUsers, deleteUsers } = useUsers();
   const [searchFilter, setSearchFilter] = useState("");
-
-  useEffect(() => {
-    setTimeout(() => {
-      const nextUsers = createFakeUser(10);
-      setUsers(nextUsers);
-      setLoading(false);
-    }, 750);
-  }, []);
 
   const createUser = () => {
     const nextUsers = createFakeUser(1);
     setUsers([...users, ...nextUsers]);
-  };
-
-  const deleteUser = (id: number) => {
-    const nextUsers = users.filter((user) => user.id !== id);
-    setUsers(nextUsers);
   };
 
   return (
@@ -49,7 +35,7 @@ function UsersPage() {
                 key={id}
                 name={name}
                 avatar={avatar}
-                onClick={() => deleteUser(id)}
+                onClick={() => deleteUsers(id)}
               />
             ))}
         </ListContainer>
